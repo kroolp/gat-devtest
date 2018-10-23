@@ -113,6 +113,17 @@ TARGET_GROUPS = [
   }
 ].freeze
 
+USERS = [
+  {
+    email: 'alex@example.com',
+    password: '0ksymoroN'
+  },
+  {
+    email: 'john@example.com',
+    password: 'john12345'
+  }
+].freeze
+
 PANEL_PROVIDERS_CODES.each { |panel_provider_code| PanelProvider.create!(code: panel_provider_code) }
 
 COUNTRIES.each do |country|
@@ -151,5 +162,12 @@ TARGET_GROUPS.each do |target_group|
     parent: TargetGroup.find_by(name: target_group.fetch(:parent_name)),
     panel_provider: PanelProvider.find_by(code: target_group.fetch(:panel_provider_code)),
     countries: countries
+  )
+end
+
+USERS.each do |user|
+  User.create!(
+    email: user.fetch(:email),
+    password: user.fetch(:password)
   )
 end
