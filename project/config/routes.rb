@@ -1,6 +1,13 @@
 Rails.application.routes.draw do
-  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
-
-
   root controller: :pages, action: :root
+
+  namespace :api do
+    namespace :v1 do
+      get 'locations/:country_code', to: 'locations#index', constraints: { country_code: /[A-Z]{2}/ }
+
+      namespace :private do
+        get 'locations/:country_code', to: 'locations#index', constraints: { country_code: /[A-Z]{2}/ }
+      end
+    end
+  end
 end
