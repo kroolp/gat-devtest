@@ -1,6 +1,6 @@
 module Api
   module V1
-    class TargetGroupsController < ApplicationController
+    class TargetGroupsController < BaseController
       def index
         target_groups = TargetGroupsByCountryCodeQuery.new(params[:country_code]).all
 

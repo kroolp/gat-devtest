@@ -1,7 +1,7 @@
 module Api
   module V1
     module Private
-      class LocationsController < ApplicationController
+      class LocationsController < BaseController
         def index
           locations = LocationsByCountryCodeQuery.new(params[:country_code]).all
 
