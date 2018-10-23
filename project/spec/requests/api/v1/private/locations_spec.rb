@@ -3,7 +3,15 @@ require 'rails_helper'
 RSpec.describe '/api/v1/private/locations', type: :request do
   include_context 'locations collection'
 
+  let(:user) { Fabricate(:user) }
+
+  before do
+    authenticate_user(user)
+  end
+
   describe 'GET /api/v1/private/locations/:country_code' do
+    it_behaves_like 'private request', :get, '/api/v1/private/locations/PL'
+
     before do
       get "/api/v1/private/locations/PL"
     end

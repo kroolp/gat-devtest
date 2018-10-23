@@ -3,7 +3,15 @@ require 'rails_helper'
 RSpec.describe '/api/v1/private/target_groups', type: :request do
   include_context 'target_groups collection'
 
+  let(:user) { Fabricate(:user) }
+
+  before do
+    authenticate_user(user)
+  end
+
   describe 'GET /api/v1/private/target_groups/:country_code' do
+    it_behaves_like 'private request', :get, '/api/v1/private/target_groups/PL'
+
     before do
       get "/api/v1/private/target_groups/PL"
     end
