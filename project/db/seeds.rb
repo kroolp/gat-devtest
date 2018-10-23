@@ -36,6 +36,83 @@ LOCATIONS = [
   { name: "Seattle", location_group_name: "Coast of the Pacific Ocean" }
 ].freeze
 
+TARGET_GROUPS = [
+  {
+    name: "Women",
+    panel_provider_code: "times_html",
+    parent_name: nil,
+    country_codes: %w[US]
+  },
+  {
+    name: "Men",
+    panel_provider_code: "10_arrays",
+    parent_name: nil,
+    country_codes: %w[US UK]
+  },
+  {
+    name: "Children",
+    panel_provider_code: "times_a",
+    parent_name: nil,
+    country_codes: %w[UK]
+  },
+  {
+    name: "Sportsmen",
+    panel_provider_code: "10_arrays",
+    parent_name: nil,
+    country_codes: %w[US]
+  },
+  {
+    name: "Moms",
+    panel_provider_code: "times_html",
+    parent_name: "Women"
+  },
+  {
+    name: "Pregnant",
+    panel_provider_code: "times_a",
+    parent_name: "Moms"
+  },
+  {
+    name: "Breastfeeding",
+    panel_provider_code: "times_html",
+    parent_name: "Moms"
+  },
+  {
+    name: "Motorists",
+    panel_provider_code: "10_arrays",
+    parent_name: "Men"
+  },
+  {
+    name: "Car drivers",
+    panel_provider_code: "times_html",
+    parent_name: "Motorists"
+  },
+  {
+    name: "Boys",
+    panel_provider_code: "times_html",
+    parent_name: "Children"
+  },
+  {
+    name: "Players",
+    panel_provider_code: "times_a",
+    parent_name: "Boys"
+  },
+  {
+    name: "Footballers",
+    panel_provider_code: "times_html",
+    parent_name: "Sportsmen"
+  },
+  {
+    name: "Professionals",
+    panel_provider_code: "10_arrays",
+    parent_name: "Footballers"
+  },
+  {
+    name: "Amateurs",
+    panel_provider_code: "times_html",
+    parent_name: "Footballers"
+  }
+].freeze
+
 PANEL_PROVIDERS_CODES.each { |panel_provider_code| PanelProvider.create!(code: panel_provider_code) }
 
 COUNTRIES.each do |country|
@@ -59,5 +136,20 @@ LOCATIONS.each do |location|
     external_id: SecureRandom.uuid,
     secret_code: SecureRandom.hex(64),
     location_group: LocationGroup.find_by(name: location.fetch(:location_group_name))
+  )
+end
+
+TARGET_GROUPS.each do |target_group|
+  countries = target_group.fetch(:country_codes, []).map do |country_code|
+    Country.find_by(code: country_code)
+  end
+
+  TargetGroup.create!(
+    name: target_group.fetch(:name),
+    external_id: SecureRandom.uuid,
+    secret_code: SecureRandom.hex(64),
+    parent: TargetGroup.find_by(name: target_group.fetch(:parent_name)),
+    panel_provider: PanelProvider.find_by(code: target_group.fetch(:panel_provider_code)),
+    countries: countries
   )
 end

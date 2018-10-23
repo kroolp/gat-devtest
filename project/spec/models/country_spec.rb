@@ -6,6 +6,8 @@ RSpec.describe Country, type: :model do
   describe 'associations' do
     it { is_expected.to belong_to(:panel_provider) }
     it { is_expected.to have_many(:location_groups) }
+    it { is_expected.to have_many(:countries_target_groups) }
+    it { is_expected.to have_many(:target_groups).through(:countries_target_groups) }
   end
 
   describe 'validations' do
